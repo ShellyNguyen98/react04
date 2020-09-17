@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import Form from 'form'
+import Card from 'card'
+import axios from 'axios '
 
-function App() {
+
+const App = () => {
+
+  const [giState, setGifState] = useState ({
+    search: '',
+    gif: {}
+  })
+
+  gitState.handleInputChange = event => {
+    setGifState({ ...gifState, [event.target.name]: event.target.value })
+  }
+
+  gitState.handleSearchGIPHY = event => {
+    event.preventDefault()
+    axios.get(`https://api.giphy.com/v1/gifs/search?api_key=q9wCxDUt6aMoxHi0QI43N6RxaOaWrMRT&q=${gitState.search}&limit=20&rating=g`)
+
+  }
+
+useEffect (() => {
+  axios.get('https://api.giphy.com/v1/gifs/search?api_key=q9wCxDUt6aMoxHi0QI43N6RxaOaWrMRT&q=cats&limit=20&rating=g')
+    .then (({data}) => {
+      let gif = data.data [Math.floor(Math.random() * data.data.length )]
+      setGifState ({ ...gifState, gif })
+    }) 
+    .catch(err => console.error(err))
+}, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+    <h1> GIPHY App </h1>
+    <Form 
+    search = {gifState.search}
+    handleInputChange={gifState.handleInputChange}
+    handleSearchGIPHY= {gifState.handleSearchGIPHY} />
+    {
+      setGifState.gif.title ? <Card gif = {setGifState.gif} /> : null
+    }
+    </>
+  )
 }
 
-export default App;
+
+
+
+// q9wCxDUt6aMoxHi0QI43N6RxaOaWrMRT
